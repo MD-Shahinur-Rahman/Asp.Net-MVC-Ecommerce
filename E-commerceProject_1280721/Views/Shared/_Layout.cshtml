@@ -1,0 +1,272 @@
+﻿<!DOCTYPE html>
+<html lang="zxx" class="no-js">
+
+<head>
+    <!-- Mobile Specific Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="*" >
+    <!-- Author Meta -->
+    <meta name="Mredul" content="CodePixar">
+    <!-- Meta Description -->
+    <meta name="description" content="">
+    <!-- Meta Keyword -->
+    <meta name="keywords" content="">
+    <!-- meta character set -->
+    <meta charset="UTF-8">
+    <!-- Site Title -->
+    <title>Trade Hub Laptop Shop</title>
+    <!--
+        CSS
+        ============================================= -->
+
+    <link href="~/Content/Fontend/css/linearicons.css" rel="stylesheet" />
+    <link href="~/Content/Fontend/css/themify-icons.css" rel="stylesheet" />
+    <link href="~/Content/Fontend/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/Fontend/css/bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Content/Fontend/css/bootstrap.css">
+    <link rel="stylesheet" href="~/Content/Fontend/css/owl.carousel.css">
+    <link rel="stylesheet" href="~/Content/Fontend/css/nice-select.css">
+    <link rel="stylesheet" href="~/Content/Fontend/css/nouislider.min.css">
+    <link rel="stylesheet" href="~/Content/Fontend/css/ion.rangeSlider.css" />
+    <link rel="stylesheet" href="~/Content/Fontend/css/ion.rangeSlider.skinFlat.css" />
+    <link rel="stylesheet" href="~/Content/Fontend/css/magnific-popup.css">
+    <link rel="stylesheet" href="~/Content/Fontend/css/main.css">
+</head>
+
+<body>
+
+    <!-- Start Header Area -->
+
+    <header class="header_area sticky-header">
+        <div class="main_menu">
+            <nav class="navbar navbar-expand-lg navbar-light main_box">
+                <div class="container">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <a class="navbar-brand logo_h" href="@Url.Action("Index", "Home")"><img src="~/Images/img/logo.png" width="100" height="70" alt="logo"></a>
+
+                    <ul>
+
+                        <li>@Html.ActionLink("Admin Dashboard", "Index", "Admin", null, new { @class = "btn btn-success" })</li>
+                    </ul>
+                    <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+                        <ul class="nav navbar-nav menu_nav ml-auto">
+                            <li style="margin-right:25px"> <i class="fa fa-envelope"></i> laptopbd@hp.com</li>
+                            <li class="nav-item nav-search d-none d-lg-block">
+
+
+                                <div class="input-group">
+                                    <div class="input-group-prepend hover-cursor" id="navbar-search-icon">
+                                        <form id="searchForm" action="@Url.Action("LiveSearch", "Home")" method="get">
+                                            <input type="text" id="searchInput" name="searchTerm" placeholder="What do you need?">
+                                            <button type="submit" class="site-btn">SEARCH</button>
+                                        </form>
+                                    </div>
+
+                                </div>
+                                <div id="searchResults" class="search-results"></div>
+                            </li>
+                            <li class="nav-item active"><a class="nav-link" href="@Url.Action("Index", "Home")">Home</a></li>
+
+                            <li class="nav-item submenu dropdown">
+                                <a href="@Url.Action("Shop", "Home")" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                                   aria-expanded="false">Shop</a>
+
+                            </li>
+
+
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <li class="nav-item active">
+                                    @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <a class="nav-link" href="javascript:document.getElementById('logoutForm').submit();">Log Out</a>
+                                    }
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="@Url.Action("Login", "Account")">Login</a>
+                                </li>
+                            }
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="nav-item">
+                                <a href="@Url.Action("Index", "Cart")" class="cart">
+                                    <span class="ti-bag"></span>
+                                    <span class="count">0</span>
+                                </a>
+                            </li>
+
+                        </ul>
+
+
+                    </div>
+                </div>
+
+            </nav>
+
+            <div>
+
+            </div>
+        </div>
+
+    </header>
+    <!-- End Header Area -->
+    <main>
+        @RenderBody()
+    </main>
+    <!-- End related-product Area -->
+    <!-- start footer Area -->
+    <footer class="footer-area section_gap">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3  col-md-6 col-sm-6">
+                    <div class="single-footer-widget">
+                        <h6>About Us</h6>
+                        <p>
+                            Technology has become a part of our daily lives, and we depend on tech products daily for a vast portion of our lives. There is hardly a home in Bangladesh without a tech product.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4  col-md-6 col-sm-6">
+                    <div class="single-footer-widget">
+                        <h6>Newsletter</h6>
+                        <p>Stay update with our latest</p>
+                        <div class="" id="mc_embed_signup">
+
+                            <form target="_blank" novalidate="true" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01"
+                                  method="get" class="form-inline">
+
+                                <div class="d-flex flex-row">
+
+                                    <input class="form-control" name="EMAIL" placeholder="Enter Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Email '"
+                                           required="" type="email">
+
+
+                                    <button class="click-btn btn btn-default"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+                                    <div style="position: absolute; left: -5000px;">
+                                        <input name="b_36c4fd991d266f23781ded980_aefe40901a" tabindex="-1" value="" type="text">
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-4">
+                                        <button class="bb-btn btn"><span class="lnr lnr-arrow-right"></span></button>
+                                    </div>
+                                </div>
+                                <div class="info"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3  col-md-6 col-sm-6">
+                    <div class="single-footer-widget mail-chimp">
+                        <h6 class="mb-20">Instragram Feed</h6>
+                        <ul class="instafeed d-flex flex-wrap">
+                            <li><img src="img/i1.jpg" alt=""></li>
+                            <li><img src="img/i2.jpg" alt=""></li>
+                            <li><img src="img/i3.jpg" alt=""></li>
+                            <li><img src="img/i4.jpg" alt=""></li>
+                            <li><img src="img/i5.jpg" alt=""></li>
+                            <li><img src="img/i6.jpg" alt=""></li>
+                            <li><img src="img/i7.jpg" alt=""></li>
+                            <li><img src="img/i8.jpg" alt=""></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 col-sm-6">
+                    <div class="single-footer-widget">
+                        <h6>Follow Us</h6>
+                        <p>Let us be social</p>
+                        <div class="footer-social d-flex align-items-center">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-dribbble"></i></a>
+                            <a href="#"><i class="fa fa-behance"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom d-flex justify-content-center align-items-center flex-wrap">
+                <p class="footer-text m-0">
+
+                    Copyright &copy;
+                    <script>document.write(new Date().getFullYear());</script> Md Shahinur Rahman Mredul, Id=1280721 <i class="fa fa-heart-o" aria-hidden="true">
+
+                </p>
+            </div>
+        </div>
+    </footer>
+    <!-- End footer Area -->
+    <script src="~/Content/Fontend/js/vendor/jquery-2.2.4.min.js"></script>
+    <script src="~/Scripts/jquery-3.7.1.min.js"></script>
+
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Content/Fontend/js/jquery.ajaxchimp.min.js"></script>
+
+    <script src="~/Content/Fontendjs/jquery.nice-select.min.js"></script>
+    <script src="~/Content/Fontendjs/jquery.sticky.js"></script>
+    <script src="~/Content/Fontendjs/nouislider.min.js"></script>
+    <script src="~/Content/Fontendjs/countdown.js"></script>
+    <script src="~/Content/Fontendjs/jquery.magnific-popup.min.js"></script>
+    <script src="~/Content/Fontendjs/owl.carousel.min.js"></script>
+    <!--gmaps Js-->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
+    <script src="~/Content/Fontendjs/gmaps.min.js"></script>
+    <script src="~/Content/Fontendjs/main.js"></script>
+
+    <script>
+    $(document).ready(function () {
+
+         $('#searchForm').on('submit', function(e) {
+            e.preventDefault(); // Prevent form from submitting normally
+        });
+
+        $('#searchInput').on('input', function() {
+            var query = $(this).val();
+
+            if (query.length > 2) {
+                $.ajax({
+                    url: '@Url.Action("LiveSearch", "Home")',
+                    type: 'GET',
+                    data: { searchTerm: query },
+                    success: function(data) {
+                        $('#searchResults').html('');
+                        if (data.length > 0) {
+                            data.forEach(function(product) {
+                                $('#searchResults').append(
+                                    '<div class="search-result-item" data-id="' + product.ProductId + '">' +
+                                        '<a href="' + '@Url.Action("ProductDetails", "Home", new { id = "PRODUCT_ID" })'.replace('PRODUCT_ID', product.ProductId) + '">' +
+
+                                            '<span>' + product.ProductName + '</span>' +
+                                        '</a>' +
+                                    '</div>'
+                                );
+                            });
+                        } else {
+                            $('#searchResults').append('<div class="search-result-item">No results found</div>');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error: ' + error);
+                        console.error('Status: ' + status);
+                        console.dir(xhr);
+                    }
+                });
+            } else {
+                $('#searchResults').html('');
+            }
+        });
+
+        $(document).on('click', '.search-result-item', function() {
+            var productId = $(this).data('id');
+            window.location.href = '@Url.Action("ProductDetails", "Home")/' + productId;
+        });
+
+
+    });
+    </script>
+</body>
+
+</html>

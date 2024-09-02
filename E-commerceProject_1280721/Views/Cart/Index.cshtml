@@ -1,0 +1,197 @@
+﻿@model List<E_commerceProject_1280721.Models.CartItem>
+@{
+    ViewBag.Title = "Cart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Shopping Cart</h1>
+               
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cart_area">
+    <div class="container">
+        <div class="cart_inner">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Product</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Count > 0)
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr data-item-id="@item.CartItemId" class="shoping__cart__item">
+                                    <td>
+                                        <div class="media">
+                                            <div class="d-flex">
+                                                <img src="@Url.Content(item.ProductImage)" alt="@item.ProductName" />
+                                            </div>
+                                            <div class="media-body">
+                                                <p>@item.ProductName</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <h5>@item.Price.ToString("C")</h5>
+                                    </td>
+                                    <td>
+                                        <div class="product_count">
+                                            <input type="text" name="qty" class="qty-input" maxlength="12" value="@item.Quantity" title="Quantity:" class="input-text qty">
+                                            <button class="plus-btn items-count" data-id="@item.CartItemId" type="button">
+                                                <i class="lnr lnr-chevron-up"></i>
+                                            </button>
+                                            <button class="minus-btn items-count mt-3" data-id="@item.CartItemId" type="button">
+                                                <i class="lnr lnr-chevron-down"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <h5 class="item-total">@((item.Price * item.Quantity).ToString("C"))</h5>
+                                    </td>
+                                    <td>
+                                        <button class="remove-from-cart btn btn-danger" data-id="@item.CartItemId">Remove</button>
+                                    </td>
+                                </tr>
+                            }
+
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <h5>Subtotal</h5>
+                                </td>
+                                <td>
+                                    <h5 id="subtotal">@Model.Sum(item => item.Price * item.Quantity).ToString("C")</h5>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr class="out_button_area">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <div class="checkout_btn_inner d-flex align-items-center">
+                                        <a class="gray_btn" href="#">Continue Shopping</a>
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                                            <a href="@Url.Action("PlaceOrder", "Order")" class="btn btn-primary">Proceed To CheckOut</a>
+                                        }
+                                        else
+                                        {
+                                            <a href="@Url.Action("Login", "Account", new { returnUrl = Url.Action("PlaceOrder", "Order") })" class="btn btn-primary">Login to Place Order</a>
+                                        }
+                                    </div>
+                                </td>
+                                <td></td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5">Your cart is empty.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script src="~/Scripts/jquery-3.7.1.js"></script>
+<script>
+$(document).ready(function () {
+    // Update the cart totals when the page loads
+    updateCartTotal();
+
+    $(document).on('click', '.plus-btn', function () {
+        var itemId = $(this).data('id');
+        var input = $(this).siblings('.qty-input');
+        var currentVal = parseInt(input.val());
+        input.val(currentVal + 1);
+        updateCartItem(itemId, currentVal + 1);
+    });
+
+    $(document).on('click', '.minus-btn', function () {
+        var itemId = $(this).data('id');
+        var input = $(this).siblings('.qty-input');
+        var currentVal = parseInt(input.val());
+        if (currentVal > 1) {
+            input.val(currentVal - 1);
+            updateCartItem(itemId, currentVal - 1);
+        }
+    });
+
+    function updateCartItem(itemId, quantity) {
+        $.ajax({
+            url: '@Url.Action("UpdateCartItem", "Cart")',
+            type: 'POST',
+            data: { cartItemId: itemId, quantity: quantity },
+            success: function (response) {
+                if (response.success) {
+                    toastr.success('Cart updated successfully.');
+                    var itemTotalElem = $('.shoping__cart__item[data-item-id="' + itemId + '"] .item-total');
+                    itemTotalElem.text('$' + (quantity * response.itemPrice).toFixed(2));
+                    updateCartTotal(); // Update totals after changing item quantity
+                } else {
+                    toastr.error('Failed to update cart.');
+                }
+            },
+            error: function () {
+                toastr.error('Failed to update cart.');
+            }
+        });
+    }
+
+    function updateCartTotal() {
+        $.ajax({
+            url: '@Url.Action("GetCartTotal", "Cart")',
+            type: 'GET',
+            success: function (response) {
+                $('#subtotal').text('$' + response.subtotal.toFixed(2));
+                $('#total').text('$' + response.total.toFixed(2));
+            },
+            error: function () {
+                toastr.error('Failed to update cart total.');
+            }
+        });
+    }
+
+    $(document).on('click', '.remove-from-cart', function () {
+        var cartItemId = $(this).data('id');
+        $.ajax({
+            url: '@Url.Action("RemoveFromCart", "Cart")',
+            type: 'POST',
+            data: { cartItemId: cartItemId },
+            success: function (response) {
+                if (response.success) {
+                    $(this).closest('tr').remove();
+                    toastr.success('Item removed from cart.');
+                    updateCartTotal();
+                } else {
+                    toastr.error('There was an error removing the product from the cart.');
+                }
+            }.bind(this),
+            error: function () {
+                toastr.error('There was an error removing the product from the cart.');
+            }
+        });
+    });
+});
+</script>

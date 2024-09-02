@@ -1,0 +1,179 @@
+﻿@model E_commerceProject_1280721.Models.ViewModels.HomePageFeatureViewModel
+@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- start banner Area -->
+<section class="banner-area">
+    <div class="container">
+        <div class="row fullscreen align-items-center justify-content-start">
+            <div class="col-lg-12">
+                <div class="active-banner-slider owl-carousel">
+                    <!-- single-slide -->
+                 
+                    <!-- single-slide -->
+                    <div class="row single-slide">
+                        <div class="col-lg-5">
+                            <div class="banner-content">
+                                <h1> New Laptop <br>Trade Hub Laptop Shop!</h1>
+                                <p>
+                                    Technology has become a part of our daily lives, and we depend on tech products daily for a vast portion of our lives. There is hardly a home in Bangladesh without a tech product. This is where we come in. Star Tech Ltd. started as a Tech Product Shop in March 2007.
+                                </p>
+                                <div class="add-bag d-flex align-items-center">
+                                    <a class="add-btn" href="@Url.Action("Shop", "Home")">Go To <span class="lnr lnr-cross"></span></a>
+                                    <span class="add-text text-uppercase">Go To Shop</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="banner-img">
+                                <img class="img-fluid" src="img/banner/banner-img.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End banner Area -->
+<!-- start features Area -->
+<section class="features-area section_gap">
+    <div class="container">
+        <div class="row features-inner">
+            <!-- single features -->
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="single-features">
+                    <ul>
+                        <li class="active" data-filter="*">Category </li>
+                        @foreach (var category in Model.FeaturedCategories)
+                        {
+                            <li data-filter=".@category.CategoryName.ToLower().Replace(" ", "-")">@category.CategoryName</li>
+                        }
+                    </ul>
+                    <h6>Free Delivery</h6>
+                    <p>Free Shipping on all order</p>
+                </div>
+            </div>
+         
+            <div class="row featured__filter">
+                @foreach (var category in Model.FeaturedCategories)
+                {
+                    foreach (var product in category.Products)
+                    {
+                        <div class="col-lg-3 col-md-4 col-sm-6 mix @category.CategoryName.ToLower().Replace(" ", "-")">
+                            <div class="featured__item">
+                                <div class="featured__item__pic">
+                                    <img src="@Url.Content(product.ImageUrl)" class="img-fluid" />
+                                    <a href="#" class="btn btn-success add-to-cart" data-id="@product.ProductId">Add to cart</a>
+                                </div>
+                                <div class="featured__item__text">
+                                    <h6><a href="#">@product.ProductName</a></h6>
+                                    <h5>$@product.Price</h5>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+
+            </div>
+        </div>
+    </div>
+</section>
+<!-- end features Area -->
+<!-- Start category Area -->
+<section class="category-area">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-12">
+                <div class="row">
+                    <div class="col-lg-8 col-md-8">
+
+                        @foreach (var category in Model.Categories)
+                        {
+                            <div class="">
+                                <div class="categories__item set-bg">
+                                    <img src="@Url.Content(category.CategoryImage)" class="img-fluid" />
+                                    <h5><a href="#">@category.CategoryName</a></h5>
+                                </div>
+                            </div>
+                        }
+
+
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End category Area -->
+<!-- start product Area -->
+<section class="owl-carousel active-product-area section_gap">
+    <!-- single product slide -->
+    <div class="single-product-slider">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6 text-center">
+                    <div class="section-title">
+                        <h1>All Products</h1>
+                        <p>
+                            Star Tech is the most popular Laptop Brand Shop in BD. Star Tech Laptop Shop has the perfect device, whether you are a freelancer
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                @foreach (var product in Model.LatestProducts)
+                {
+                    <div class="col-lg-3 col-md-6">
+                        <div class="single-product">
+                            <img class="img-fluid" src="@Url.Content(product.ImageUrl)" alt="@product.ProductName">
+                            <div class="product-details">
+                                <h6>@product.ProductName</h6>
+                                <div class="price">
+                                    <h6>@product.Price</h6>
+                                </div>
+                                <a href="@Url.Action("ProductDetails", "Home", new { id = product.ProductId })" class="btn btn-primary">Details</a>
+                                <span data-id="@product.ProductId" class="btn btn-success add-to-cart">Add To Cart</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+           
+
+            </div>
+        </div>
+    </div>
+ 
+   
+</section>
+
+<script src="~/Scripts/jquery-3.7.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.add-to-cart').click(function (e) {
+            e.preventDefault();
+            var productId = $(this).data('id');
+            $.ajax({
+                url: '@Url.Action("AddToCart", "Cart")',
+                type: 'POST',
+                data: { productId: productId },
+                success: function (response) {
+                    if (response.success) {
+                        $('#navbarSupportedContent ul li a.cart span.count').text(response.totalItemCount);
+                    } else {
+                        alert('There was an error adding the product to the cart.');
+                    }
+                },
+                error: function () {
+                    alert('There was an error adding the product to the cart.');
+                }
+            });
+        });
+    });
+</script>
+
+
